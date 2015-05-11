@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Results</title>
+</head>
+<body>
+	<h1>Pics of <%= tag %>
+	<% if (pics_arr) %>
+		<form action="/" method="POST">
+			<input type="hidden" name="tag" value="<%= tag %>">
+			<ul>
+				<% pics_arr.each do |pic| %>
+					<li><input name="pic_choice[]" type="checkbox" value="<%= pic %>">
+					<img src="<%= pic %>"> </li>
+				<% end %>
+			</ul>
+			<button>Save Choices</button>
+		</form>
+	<% else %>
+		<h3>No results.  Please try your search again.</h3>
+	<% end %>
+
+	<small><a href="/">Go home</a></small>
+</body>
+</html>
