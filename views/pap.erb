@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>home</title>
+	<style>
+		header {
+			height: 300px;
+			background-image: url("http://michaelhyatt.com/wp-content/uploads/2011/09/iStock_000006003063Small.jpg"); 
+			background-size: cover;
+			background-position: center;
+			color: white;
+			margin: 0;
+		}
+		h1 {
+			text-align: center;
+			padding-top: 140px;
+			font-size: 50px;
+			margin: 0;
+		}
+	</style>
+</head>
+<body>
+<header>
+	<h1>Papaparazzi</h1>
+</header>
+	<form action="/" method="POST">
+		<input type="text" name="new_tag" placeholder="search tag">
+		<button>Submit</button>
+	</form>
+
+	<ul>
+		<% if (pics) %>
+			<% pics.each{|pic| %> 
+				<li><img src="<%= pic[2] %>"></li>
+			<% }
+		end %>
+</body>
+</html>

@@ -21,5 +21,6 @@ PLATFORMS
 
 DEPENDENCIES
   httparty
+  json
   sinatra
   sqlite3
