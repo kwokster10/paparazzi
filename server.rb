@@ -1,7 +1,6 @@
 require 'sinatra'
 require 'sqlite3'
 require 'httparty'
-# require './public/secrets.json'
 require 'json'
 
 db = SQLite3::Database.new "pap.db"
@@ -14,11 +13,13 @@ rows = db.execute <<-SQL
 		);
 SQL
 
+# renders the search page with any saved pictures
 get "/" do
 	pic_list = db.execute("select * from pics;")
 	erb :pap, locals: {pics: pic_list}
 end
 
+# posts all chosen pics from results page
 post "/" do 
 	saved_pics = params[:pic_choice]
 	saved_tag = params[:tag]
@@ -28,6 +29,7 @@ post "/" do
 	redirect("/")
 end
 
+# post results from instagram tag search to show page
 post "/results" do
 	url_arr=[]
 	content = JSON.load File.new("./public/secrets.json")

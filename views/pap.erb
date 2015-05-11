@@ -18,22 +18,35 @@
 			font-size: 50px;
 			margin: 0;
 		}
+		#saved li {
+			display: inline-block;
+		}
+		#saved img {
+			width: 200px;
+			height: 200px;
+			padding: 10px;
+			border-radius: 20px;
+		}
 	</style>
 </head>
 <body>
 <header>
 	<h1>Papaparazzi</h1>
 </header>
+
 	<form action="/results" method="POST">
 		<input type="text" name="new_tag" placeholder="search tag">
 		<button>Submit</button>
 	</form>
 
+<div id="saved">
 	<ul>
 		<% if (pics) %>
 			<% pics.each{|pic| %> 
 				<li><img src="<%= pic[2] %>"></li>
 			<% }
 		end %>
+	</ul>
+</div>
 </body>
 </html>

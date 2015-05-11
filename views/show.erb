@@ -3,9 +3,21 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Results</title>
+	<style>
+		#results li {
+			display: inline-block;
+		}
+		#results img {
+			width: 200px;
+			height: 200px;
+			padding: 10px;
+			border-radius: 20px;
+		}
+	</style>
 </head>
 <body>
 	<h1>Pics of <%= tag %>
+	<div id="results">
 	<% if (pics_arr) %>
 		<form action="/" method="POST">
 			<input type="hidden" name="tag" value="<%= tag %>">
@@ -17,6 +29,7 @@
 			</ul>
 			<button>Save Choices</button>
 		</form>
+	</div>
 	<% else %>
 		<h3>No results.  Please try your search again.</h3>
 	<% end %>
