@@ -43,6 +43,7 @@ post "/results" do
 
 		wquery ="http://api.wunderground.com/api/93df331295e1726f/conditions/q/" + new_tag +".json"
 		w_response = HTTParty.get(wquery)
+		puts w_response
 		w_image = w_response["current_observation"]["icon_url"]
 		puts w_image
 
