@@ -36,16 +36,25 @@ post "/results" do
 	new_tag = params[:new_tag].gsub(/\s/,"")
 	location= params[:location]
 
+	# if the location checkbox is chosen, do this
 	if (location)
 		gquery = "https://maps.googleapis.com/maps/api/geocode/json?address=" << new_tag
 		g_response = HTTParty.get(gquery)
+
+		wquery ="http://api.wunderground.com/api/93df331295e1726f/conditions/q/" + new_tag +".json"
+		w_response = HTTParty.get(wquery)
+		w_image = w_response["current_observation"]["icon_url"]
+		puts w_image
+
 		lat = g_response["results"][0]["geometry"]["location"]["lat"]
 		lng = g_response["results"][0]["geometry"]["location"]["lng"]
 		url = "https://api.instagram.com/v1/media/search?lat=" << lat.to_s << "&lng=" <<lng.to_s << "&client_id=" << content["insta_cli_id"]
+	# searching by tag
 	else
 		url = "https://api.instagram.com/v1/tags/" + new_tag + "/media/recent?client_id=" + content["insta_cli_id"]
 	end
-	puts url
+
+	# runs the instagram query
 	response = HTTParty.get(url)
 	image_path = response["data"]
 	count=0
@@ -54,9 +63,12 @@ post "/results" do
 		url_arr.push(pic["images"]["low_resolution"]["url"])
 		break if count >= 10
 	end
-	erb :show, locals: { pics_arr: url_arr, tag: new_tag }
+
+	w_image = "" if !w_image
+		erb :show, locals: { pics_arr: url_arr, tag: new_tag, w_image: w_image }
 end
 
+# deletes a saved photo from the db
 delete "/" do
 	id=params[:pic_id].to_i
 	db.execute("delete from pics where id = ?;", id)
