@@ -38,13 +38,8 @@ post "/results" do
 
 	if (location)
 		gquery = "https://maps.googleapis.com/maps/api/geocode/json?address=" << new_tag
-puts "GQUERY:"
-puts gquery
-g_response = HTTParty.get(gquery)
-puts g_response	
+		g_response = HTTParty.get(gquery)
 		lat = g_response["results"][0]["geometry"]["location"]["lat"]
-puts "LAT"
-puts lat
 		lng = g_response["results"][0]["geometry"]["location"]["lng"]
 		url = "https://api.instagram.com/v1/media/search?lat=" << lat.to_s << "&lng=" <<lng.to_s << "&client_id=" << content["insta_cli_id"]
 	else
@@ -64,8 +59,6 @@ end
 
 delete "/" do
 	id=params[:pic_id].to_i
-puts "IDIDIDIDIDIDIDID"
-puts id
 	db.execute("delete from pics where id = ?;", id)
 	redirect("/")
 end
