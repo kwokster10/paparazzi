@@ -41,15 +41,18 @@ post "/results" do
 		gquery = "https://maps.googleapis.com/maps/api/geocode/json?address=" << new_tag
 		g_response = HTTParty.get(gquery)
 
-		wquery ="http://api.wunderground.com/api/93df331295e1726f/conditions/q/" + new_tag +".json"
-		w_response = HTTParty.get(wquery)
-		puts w_response
-		w_image = w_response["current_observation"]["icon_url"]
-		puts w_image
-
 		lat = g_response["results"][0]["geometry"]["location"]["lat"]
 		lng = g_response["results"][0]["geometry"]["location"]["lng"]
+
+		wquery ="http://api.wunderground.com/api/93df331295e1726f/conditions/q/" + lat.to_s + "," + lng.to_s + ".json"
+		w_response = HTTParty.get(wquery)
+
+		if (w_response["current_observation"])
+			w_image = w_response["current_observation"]["icon_url"]
+		end
+
 		url = "https://api.instagram.com/v1/media/search?lat=" << lat.to_s << "&lng=" <<lng.to_s << "&client_id=" << content["insta_cli_id"]
+
 	# searching by tag
 	else
 		url = "https://api.instagram.com/v1/tags/" + new_tag + "/media/recent?client_id=" + content["insta_cli_id"]
