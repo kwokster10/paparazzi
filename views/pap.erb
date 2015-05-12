@@ -33,9 +33,10 @@
 <header>
 	<h1>Papaparazzi</h1>
 </header>
-
+	<br>
 	<form action="/results" method="POST">
-		<input type="text" name="new_tag" placeholder="search tag">
+		<input type="text" name="new_tag" placeholder="search tag" required>
+		<input type="checkbox" name="location">Search by location
 		<button>Submit</button>
 	</form>
 
@@ -43,7 +44,14 @@
 	<ul>
 		<% if (pics) %>
 			<% pics.each{|pic| %> 
-				<li><img src="<%= pic[2] %>"></li>
+				<li>
+					<img src="<%= pic[2] %>">
+					<form action="/" method="POST">
+						<input type="hidden" name="_method" value="DELETE">
+						<input type="hidden" name="pic_id" value="<%= pic[0] %>">
+						<button>Delete</button>
+					</form>
+				</li>
 			<% }
 		end %>
 	</ul>

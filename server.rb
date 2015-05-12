@@ -33,8 +33,23 @@ end
 post "/results" do
 	url_arr=[]
 	content = JSON.load File.new("./public/secrets.json")
-	new_tag = params[:new_tag]	
-	url = "https://api.instagram.com/v1/tags/" + new_tag + "/media/recent?client_id=" + content["insta_cli_id"];
+	new_tag = params[:new_tag].gsub(/\s/,"")
+	location= params[:location]
+
+	if (location)
+		gquery = "https://maps.googleapis.com/maps/api/geocode/json?address=" << new_tag
+puts "GQUERY:"
+puts gquery
+g_response = HTTParty.get(gquery)
+puts g_response	
+		lat = g_response["results"][0]["geometry"]["location"]["lat"]
+puts "LAT"
+puts lat
+		lng = g_response["results"][0]["geometry"]["location"]["lng"]
+		url = "https://api.instagram.com/v1/media/search?lat=" << lat.to_s << "&lng=" <<lng.to_s << "&client_id=" << content["insta_cli_id"]
+	else
+		url = "https://api.instagram.com/v1/tags/" + new_tag + "/media/recent?client_id=" + content["insta_cli_id"]
+	end
 	puts url
 	response = HTTParty.get(url)
 	image_path = response["data"]
@@ -47,5 +62,11 @@ post "/results" do
 	erb :show, locals: { pics_arr: url_arr, tag: new_tag }
 end
 
-
+delete "/" do
+	id=params[:pic_id].to_i
+puts "IDIDIDIDIDIDIDID"
+puts id
+	db.execute("delete from pics where id = ?;", id)
+	redirect("/")
+end
 

@@ -18,7 +18,7 @@
 <body>
 	<h1>Pics of <%= tag %>
 	<div id="results">
-	<% if (pics_arr) %>
+	<% if (pics_arr.length>0) %>
 		<form action="/" method="POST">
 			<input type="hidden" name="tag" value="<%= tag %>">
 			<ul>
