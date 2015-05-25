@@ -1,2 +1,4 @@
 secrets.rb
 pap.db
+secrets.json
+public/secrets.json
